@@ -5,41 +5,49 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
 
 namespace WpfAppWarmKalt
 {
     public static class JSONHelper
     {
-        public static void WriteToJsonFile<T>(string filePath, T objectToWrite, bool append = false)
+        public static void saveAsJson<T>(List<T> list, string path)
         {
-            TextWriter writer = null;
             try
             {
-                var contentsToWriteToFile = JsonConvert.SerializeObject(objectToWrite, Newtonsoft.Json.Formatting.Indented);
-                writer = new StreamWriter(filePath, append);
-                writer.Write(contentsToWriteToFile);
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    Formatting = Newtonsoft.Json.Formatting.Indented
+                };
+
+                string jsonString = JsonConvert.SerializeObject(list, settings);
+                File.WriteAllText(path, jsonString);
             }
-            finally
+            catch (Exception ex)
             {
-                if (writer != null)
-                    writer.Close();
+                MessageBox.Show($"An error occurred while saving data to {path}: {ex.Message}");
             }
         }
 
-        public static T ReadFromJsonFile<T>(string filePath)
+        public static List<T> readFromJson<T>(string path)
         {
-            TextReader reader = null;
             try
             {
-                reader = new StreamReader(filePath);
-                var fileContents = reader.ReadToEnd();
-                return JsonConvert.DeserializeObject<T>(fileContents);
+                string jsonString = File.ReadAllText(path);
+                var settings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                };
+
+                List<T> list = JsonConvert.DeserializeObject<List<T>>(jsonString, settings);
+                return list;
             }
-            finally
+            catch (Exception ex)
             {
-                if (reader != null)
-                    reader.Close();
+                MessageBox.Show($"An error occurred while reading data from {path}: {ex.Message}");
+                return null;
             }
         }
     }

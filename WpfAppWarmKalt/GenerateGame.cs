@@ -15,8 +15,12 @@ namespace WpfAppWarmKalt
             {
                 return rnd.Next(0,100);
             
-            }else return rnd.Next(0,1000);
-            
+            }else if (mode == "hard")
+            {
+                return rnd.Next(0, 1000);
+            }
+             else return rnd.Next(0, 100);
+
         }
     }
 }

@@ -42,8 +42,11 @@ namespace WpfAppWarmKalt
                 {
                     if (txtNumber == number)
                     {
-                        MessageBox.Show("Tebrikler, doğru sayıyı bildiniz!");
+                        MessageBox.Show("Herzlichen Glückwunsch, Sie haben die richtige Nummer!");
                         UserManager.User.AddGame(new Game(UserManager.SpielMode, UserManager.AttemptNumber));
+                        UserManager.SaveUsers();
+                        UserManager.UpdateJson(UserManager.Data);
+                       // UserManager.Data = null;
                         StartNewGame();
                     }
                     else
@@ -64,7 +67,7 @@ namespace WpfAppWarmKalt
                 }
                 else
                 {
-                    MessageBox.Show("Lütfen geçerli bir sayı girin.");
+                    MessageBox.Show("Bitte geben Sie eine gültige Nummer ein.");
                 }
 
                 txtbxEingegebeneNumber.Clear(); // TextBox'ı temizle
@@ -72,12 +75,12 @@ namespace WpfAppWarmKalt
         }
         private void StartNewGame()
         {
-            MessageBoxResult result = MessageBox.Show("Oyuna devam etmek istiyor musunuz?", "Oyun Daveti", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Wollen Sie das Spiel fortsetzen?", "Spiel-Einladung", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
                 // Kullanıcı evet derse buraya oyunun devam etmesiyle ilgili kodlar gelebilir
-                MessageBox.Show("Oyun devam ediyor...");
+                MessageBox.Show("Das Spiel geht weiter...");
                 UserManager.newGame();
                 lblWarmOderKalt.Content = "";
                 UserManager.RandomNumber = GenerateGame.SpielMode(UserManager.SpielMode);
@@ -87,7 +90,7 @@ namespace WpfAppWarmKalt
             else if (result == MessageBoxResult.No)
             {
                 // Kullanıcı hayır derse oyunu sonlandırmak için gerekli işlemler yapılabilir
-                MessageBox.Show("Oyundan çıkılıyor...");
+                MessageBox.Show("Beenden des Spiels...");
                 UserManager.newUserGame();
                 new MainWindow().Show();    
                 this.Close();

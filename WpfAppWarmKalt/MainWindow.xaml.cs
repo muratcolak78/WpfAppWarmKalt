@@ -20,6 +20,8 @@ namespace WpfAppWarmKalt
         {
             InitializeComponent();
             UserManager.LoadUsers();
+            UserManager.sortList();
+            UserManager.Data = DG1;
             DG1.ItemsSource = UserManager.Users;
         }
 
@@ -35,8 +37,9 @@ namespace WpfAppWarmKalt
                     {
                         if (UserManager.UserType == "vorhanden" && UserController.Controller(txtBoxName.Text))
                         {
-
-
+                            //new SpielFenster().Show();
+                            
+                            //this.Close();
                         }
                         //else MessageBox.Show("Es wurde kein solcher Spieler gefunden");
                         
@@ -45,16 +48,18 @@ namespace WpfAppWarmKalt
                             User user = new User(txtBoxName.Text);
                             UserManager.Users.Add(user);
                             UserManager.User = user;
+                            UserManager.SaveUsers();
+                            UserManager.UpdateJson(DG1);
+                            MessageBox.Show(UserManager.Users.Count.ToString());
                         }
                       
                         
                         if (UserManager.User != null && UserManager.SpielMode != null)
                         {
                             new SpielFenster().Show();
-                            UserManager.User.AddGame(new Game(UserManager.SpielMode));
                             this.Close();
                         }
-                        else MessageBox.Show("sorun var");
+                      
 
                     }
                     else
@@ -85,6 +90,20 @@ namespace WpfAppWarmKalt
         {
             RadioButtonController.CheckRadioButton(sender as RadioButton);
 
+        }
+
+        private void DG1_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+        }
+
+        private void DG1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(DG1.SelectedItem is User user)
+            {
+                txtBoxName.Text = user.userName;
+                rbVorhanden.IsChecked = true;
+            }
         }
     }
 }

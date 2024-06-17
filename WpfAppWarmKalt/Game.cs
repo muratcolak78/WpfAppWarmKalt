@@ -17,12 +17,7 @@ namespace WpfAppWarmKalt
             this.Attempts = attempts;
             SetScore();
         }
-        public Game(string gameNiveue)
-        {
-            this.gameNiveue = gameNiveue;
-           
-            SetScore();
-        }
+     
 
         public string gameNiveue { get; set; }
         public int Attempts
@@ -37,7 +32,7 @@ namespace WpfAppWarmKalt
         public int Score
         {
             get { return score; }
-            private set
+            set
             {
                 score = value;
                 OnScoreChanged?.Invoke(this, EventArgs.Empty); // Score değiştiğinde olayı tetikle

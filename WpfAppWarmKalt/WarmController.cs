@@ -13,7 +13,7 @@ namespace WpfAppWarmKalt
             int fark1 = number1 - number2;
             int fark2= number3 - number4;
 
-            MessageBox.Show(fark1.ToString() + "  " + fark2.ToString());
+           
             if (fark1 < 0) fark1 = -fark1;
             if (fark2 < 0) fark2= -fark2;
             if (fark1 < fark2) return "Warm";
