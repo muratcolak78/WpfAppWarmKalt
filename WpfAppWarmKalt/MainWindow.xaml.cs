@@ -23,6 +23,7 @@ namespace WpfAppWarmKalt
             UserManager.sortList();
             UserManager.Data = DG1;
             DG1.ItemsSource = UserManager.Users;
+            SqlConnect.getConnection();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
